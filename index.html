@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imsakiyah Clasher 2026 - Fix Preview</title>
+    <title>Imsakiyah Clasher 2026 - Official</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
         
-        body { font-family: 'Poppins', sans-serif; background-color: #0c111d; color: #e2e8f0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #0c111d; 
+            color: #e2e8f0; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh;
+        }
 
-        /* AREA CAPTURE - JANGAN DIUBAH */
+        /* AREA CAPTURE - TERSEMBUNYI UNTUK RENDER */
         #captureArea {
             position: absolute;
             left: -9999px;
             top: 0;
             width: 1080px;
             height: 1920px;
-            background-image: url('BG Imsak.jpg');
+            background-image: url('BG Imsak.jpg'); 
             background-size: 100% 100%;
             background-color: #f3e5ab;
             color: #ffffff;
@@ -49,14 +58,14 @@
         }
         .imsak-table td { 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 9px 10px; 
+            padding: 11px 10px; 
             text-align: center; 
             font-size: 25px; 
             font-weight: 300; 
             line-height: 1.0; 
         }
 
-        /* FIX PREVIEW AREA */
+        /* PREVIEW AREA */
         #previewContainer {
             width: 100%;
             max-width: 400px;
@@ -64,7 +73,6 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            /* Container harus relatif agar isi yang di-scale tetap terbaca tingginya */
             position: relative;
         }
 
@@ -77,78 +85,91 @@
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             background-color: #0c111d;
-            /* Tambahkan baris di bawah ini */
             margin-bottom: -1920px; 
         }
 
-        .coc-btn { background: linear-gradient(to bottom, #270249, #270249); border-bottom: 5px solid #0e0b23; color: #fffff; font-weight: 900; }
+        .coc-btn { 
+            background: linear-gradient(to bottom, #4c1d95, #2e1065); 
+            border-bottom: 5px solid #1e1b4b; 
+            color: #ffffff; 
+            font-weight: 900; 
+            transition: all 0.2s;
+        }
+        .coc-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+        
+        .reset-btn {
+            background: #334155;
+            border-bottom: 4px solid #1e293b;
+            color: #facc15;
+            font-weight: 800;
+        }
     </style>
 </head>
 <body>
 
-    <div class="w-full max-w-md bg-slate-800 p-6 rounded-3xl shadow-2xl border-2 border-slate-700 mb-6">
-        <h1 class="text-xl font-black text-white-500 text-center mb-5 uppercase italic tracking-tighter">Cek Jadwal Imsakiyah Kotamu Chief</h1>
+    <div id="inputWrapper" class="w-full max-w-md bg-slate-800 p-6 rounded-3xl shadow-2xl border-2 border-slate-700 mb-6">
+        <h1 class="text-xl font-black text-white text-center mb-5 uppercase italic tracking-tighter">Cek Jadwal Imsakiyah Kotamu Chief</h1>
         <div class="space-y-3">
             <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
             <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-bold outline-none focus:border-purple-500">
-            <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl"></div>
-            <button onclick="generateUltra()" class="w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm">Generate</button>
+            <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl"></div>
+            <button id="btnGenerate" onclick="generateUltra()" class="w-full coc-btn py-4 rounded-xl uppercase tracking-widest text-sm">Generate Jadwal</button>
         </div>
     </div>
 
-    <div id="actionBtn" class="hidden mb-6 text-center">
-        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-10 py-4 rounded-full font-black text-white uppercase transition-all">
+    <div id="actionContainer" class="hidden flex flex-col items-center gap-4 mb-6">
+        <button onclick="resetPage()" class="reset-btn px-6 py-3 rounded-xl uppercase text-xs tracking-widest transition-all active:scale-95">
+            ↺ GANTI KOTA / TAG (REFRESH)
+        </button>
+        
+        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-10 py-4 rounded-full font-black text-white uppercase shadow-lg transition-all active:scale-95">
             Simpan Gambar
         </button>
     </div>
 
     <div id="previewContainer">
-        <p class="text-yellow-500 font-bold mb-4 uppercase text-xs">PRATINJAU:</p>
+        <p class="text-yellow-500 font-bold mb-4 uppercase text-xs tracking-widest text-center">Pratinjau Hasil:</p>
         <div id="previewArea"></div>
     </div>
 
     <div id="captureArea">
         <div class="profile-section">
-           <p style="font-size: 30px; font-weight: 900; color: #facc15; text-transform: uppercase; letter-spacing: 5px; margin-top: -30px;">
-                Jadwal Imsakiyah 1447H
-            </p>
-			<h2 style="font-size: 30px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -15px; text-shadow: 5px 5px #4a2c0f;">
-                Untukmu Chief
-            </h2>
-			<h2 style="font-size: 50px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -40px; text-shadow: 5px 5px #4a2c0f;">
-                <span id="pName" style="color: #facc15;">CHIEF</span>
-            </h2>
-            <div style="font-size: 28px; margin-bottom: -60px !important; color: #fff;">
-                <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
-            </div>
-            <div style="margin-bottom: -15px;">
-                <h3 id="cityNameDisplay" style="font-size: 40px; font-weight: 900; color: #ffffff; ">
-                    KOTA
-                </h3>
-            </div>
-        </div>
+           <p style="font-size: 30px; font-weight: 900; color: #facc15; text-transform: uppercase; letter-spacing: 5px; margin-top: -30px;">
+                Jadwal Imsakiyah 1447H
+            </p>
+            <h2 style="font-size: 30px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -15px; text-shadow: 5px 5px #4a2c0f;">
+                Untukmu Chief
+            </h2>
+            <h2 style="font-size: 50px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -40px; text-shadow: 5px 5px #4a2c0f;">
+                <span id="pName" style="color: #facc15;">CHIEF</span>
+            </h2>
+            <div style="font-size: 28px; margin-bottom: -60px !important; color: #fff;">
+                <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
+            </div>
+            <div style="margin-bottom: -15px;">
+                <h3 id="cityNameDisplay" style="font-size: 40px; font-weight: 900; color: #ffffff; ">KOTA</h3>
+            </div>
+        </div>
         <table class="imsak-table" style="margin-top: -20px !important;">
             <thead>
                 <tr>
-                    <th style="width: 150px; border-top-left-radius: 25px;">HARI KE</th>
-                    
-                    <th style="width: 350px; text-align: center; padding-left: 40px;">TANGGAL</th>
-                    
+                    <th style="width: 150px; border-top-left-radius: 25px;">KE</th>
+                    <th style="width: 350px; text-align: center;">TANGGAL</th>
                     <th style="width: 250px;">IMSAK</th>
-                    
                     <th style="width: 250px; border-top-right-radius: 25px;">MAGHRIB</th>
                 </tr>
             </thead>
             <tbody id="jadwalBody"></tbody>
         </table>
         <div style="margin-top: 30px; width: 100%; text-align: center;">
-            <p style="font-size: 20px; font-weight: 300; color: #ffffff; opacity: 0.5; text-transform: uppercase;">Sumber Kemenag RI</p>
+            <p style="font-size: 20px; font-weight: 300; color: #ffffff; opacity: 0.5; text-transform: uppercase;">Sumber Kemenag RI | 2026 Clasher Edition</p>
         </div>
     </div>
 
     <script>
         let selectedId = "";
 
+        // Fungsi Cari Kota via API
         async function fetchCitySuggestions() {
             const query = document.getElementById('cityInput').value;
             const box = document.getElementById('suggestionBox');
@@ -157,10 +178,14 @@
                 const res = await fetch(`https://api.myquran.com/v2/sholat/kota/cari/${query}`);
                 const data = await res.json();
                 if (data.data.length > 0) {
-                    box.innerHTML = data.data.map(k => `<div onclick="setCity('${k.id}', '${k.lokasi}')" class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">${k.lokasi}</div>`).join('');
+                    box.innerHTML = data.data.map(k => `
+                        <div onclick="setCity('${k.id}', '${k.lokasi}')" 
+                             class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">
+                             ${k.lokasi}
+                        </div>`).join('');
                     box.classList.remove('hidden');
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) { console.error("Error kota:", e); }
         }
 
         function setCity(id, nama) {
@@ -169,47 +194,57 @@
             document.getElementById('suggestionBox').classList.add('hidden');
         }
 
+        // Fungsi Refresh Halaman
+        function resetPage() {
+            location.reload();
+        }
+
+        // Fungsi Utama Generate
         async function generateUltra() {
             const tag = document.getElementById('tagInput').value.trim();
+            const btn = document.getElementById('btnGenerate');
+            
             if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
+            btn.innerText = "SCOUTING VILLAGE...";
+            btn.disabled = true;
+
             try {
-               	const playerRes = await fetch(`https://nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
+                // 1. Ambil Data Player CoC
+                const playerRes = await fetch(`https://nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
                 const player = await playerRes.json();
 
+                // 2. Ambil Data Jadwal Sholat
                 const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
                 const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
                 const feb = await febRes.json();
                 const mar = await marRes.json();
 
+                // Filter 30 hari Ramadan (Estimasi mulai 18 Feb 2026)
                 const full = [
                     ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 18),
                     ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 19)
                 ];
 
                 const rows = full.slice(0, 30).map((h, i) => {
-                    // Memecah "Rabu, 18/02/2026" menjadi ["Rabu", " 18/02/2026"]
                     const part = h.tanggal.split(','); 
-                    const hari = part[0]; // Rabu
-                    const tgl = part[1].trim(); // 18/02/2026
-                
                     return `
                         <tr>
-                            <td style="color: rgba(255,255,255,0.3);">${i+1}</td>
-                            <td style="text-align: center; padding-left: 40px; color: #fff;">
-                                ${hari}, ${tgl} 
-                            </td>
-                            <td style="color: #60a5fa;">${h.imsak}</td>
-                            <td style="color: #fb923c;">${h.maghrib}</td>
+                            <td style="color: rgba(255,255,255,0.3); font-weight: 700;">${i+1}</td>
+                            <td style="text-align: center; color: #fff;">${part[0]}, ${part[1].trim()}</td>
+                            <td style="color: #60a5fa; font-weight: 900;">${h.imsak}</td>
+                            <td style="color: #fb923c; font-weight: 900;">${h.maghrib}</td>
                         </tr>`;
                 }).join('');
 
+                // Update DOM Capture
                 document.getElementById('jadwalBody').innerHTML = rows;
                 document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
                 document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
                 document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
                 document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
 
+                // Siapkan Preview
                 const captureArea = document.getElementById('captureArea');
                 const previewArea = document.getElementById('previewArea');
                 const container = document.getElementById('previewContainer');
@@ -222,26 +257,34 @@
                 previewArea.style.flexDirection = "column";
                 previewArea.style.alignItems = "center";
 
-                container.style.display = 'flex';
-                
-                // KALKULASI SCALE
-               // ... kode fetch data di atas tetap sama ...
-
+                // Scaling Responsif
                 const scaleValue = (container.offsetWidth) / 1080;
                 previewArea.style.transform = `scale(${scaleValue})`;
-                
-                // Gunakan kalkulasi ini agar container membungkus full dari atas ke bawah
                 container.style.height = (1920 * scaleValue) + "px";
+                
+                // Switch Tampilan
+                document.getElementById('inputWrapper').classList.add('hidden');
+                document.getElementById('actionContainer').classList.remove('hidden');
                 container.style.display = 'flex';
                 
-                document.getElementById('actionBtn').classList.remove('hidden');
-                window.scrollTo({ top: document.getElementById('actionBtn').offsetTop - 20, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            } catch (e) { alert("Gagal memuat data!"); }
+            } catch (e) { 
+                alert("Gagal memuat data! Periksa Tag atau Koneksi."); 
+            } finally {
+                btn.innerText = "Generate Jadwal";
+                btn.disabled = false;
+            }
         }
 
+        // Fungsi Simpan ke Galeri
         function downloadUltra() {
             const area = document.getElementById('captureArea');
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "RENDERING...";
+            btn.disabled = true;
+            
             html2canvas(area, { 
                 useCORS: true, 
                 allowTaint: true,
@@ -253,6 +296,8 @@
                 link.download = `Imsakiyah_Clasher_2026.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
+                btn.innerText = originalText;
+                btn.disabled = false;
             });
         }
     </script>
