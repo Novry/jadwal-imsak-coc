@@ -3,292 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imsakiyah Clasher 2026 - Official</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Jadwal Imsakiyah Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
-        
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: #0c111d; 
-            color: #e2e8f0; 
-            padding: 15px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh;
+        :root {
+            --gold: #FFD700;
+            --purple-bg: #2A0944;
+            --table-header: #5F3100;
         }
 
-        /* AREA CAPTURE - INI YANG AKAN DI-DOWNLOAD */
+        body {
+            background-color: #1a1a1a;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* AREA CAPTURE UTAMA */
         #captureArea {
-            position: absolute;
-            left: -9999px; /* Tersembunyi dari layar tapi ada untuk rendering */
-            top: 0;
-            width: 1080px;
-            height: 1920px;
-            background-image: url('BG Imsak.jpg'); 
-            background-size: 100% 100%;
-            background-color: #f3e5ab;
-            color: #ffffff;
-            padding: 150px 60px 60px 60px; 
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profile-section {
+            width: 450px;
+            background: linear-gradient(180deg, #3b185f 0%, #2a0944 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid var(--gold);
             text-align: center;
-            width: 100%;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* HEADER & LOGO */
+        .logo-section h2 {
+            font-family: 'Oswald', sans-serif;
+            margin: 5px 0;
+            color: var(--gold);
+            letter-spacing: 1px;
+            text-shadow: 2px 2px #000;
+        }
+
+        .sub-header {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* BAGIAN YANG SEBELUMNYA TERTUMPUK (SOLUSI: FLEXBOX) */
+        .identity-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px; 
+            gap: 2px; /* Jarak antar teks agar tidak menempel */
+            margin-bottom: 15px;
         }
 
-        .imsak-table { width: 100%; border-collapse: collapse; margin-top: -15px; }
-        .imsak-table th { 
-            background-color: rgba(74, 44, 15, 0.85); 
-            color: #facc15; 
-            padding: 12px 15px; 
-            font-size: 26px; 
-            text-transform: uppercase; 
-            border-bottom: 5px solid #facc15; 
-        }
-        .imsak-table td { 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 11px 10px; 
-            text-align: center; 
-            font-size: 25px; 
-            font-weight: 300; 
-            line-height: 1.0; 
+        .name-highlight {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            line-height: 1;
         }
 
-        /* PREVIEW AREA - INI YANG DILIHAT USER */
-        #previewContainer {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-        }
-
-        #previewArea {
-            width: 1080px;
-            height: 1920px;
-            transform-origin: top center;
-            border: 8px solid #ca8a04;
-            border-radius: 40px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            background-color: #0c111d;
-            margin-bottom: -1920px; /* Kompensasi scale */
-        }
-
-        .coc-btn { 
-            background: linear-gradient(to bottom, #4c1d95, #2e1065); 
-            border-bottom: 5px solid #1e1b4b; 
-            color: #ffffff; 
-            font-weight: 900; 
-            transition: all 0.2s;
-        }
-        .coc-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
-        
-        .reset-btn {
-            background: #334155;
-            border-bottom: 4px solid #1e293b;
-            color: #facc15;
+        .location-highlight {
+            font-size: 18px;
             font-weight: 800;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 15px;
+            border-radius: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* STYLING TABEL */
+        .imsak-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .imsak-table thead {
+            background: linear-gradient(to bottom, #8b4513, #5f3100);
+            color: var(--gold);
+        }
+
+        .imsak-table th {
+            padding: 10px 5px;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .imsak-table td {
+            padding: 8px 5px;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+
+        .time-col {
+            color: #00d4ff; /* Warna Imsak */
+            font-weight: bold;
+        }
+
+        .maghrib-col {
+            color: #ff9f00; /* Warna Maghrib */
+            font-weight: bold;
+        }
+
+        /* BUTTON */
+        .btn-capture {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div id="inputWrapper" class="w-full max-w-md bg-slate-800 p-6 rounded-3xl shadow-2xl border-2 border-slate-700 mb-6">
-        <h1 class="text-xl font-black text-white text-center mb-5 uppercase italic tracking-tighter">Imsakiyah Clasher 2026</h1>
-        <div class="space-y-3">
-            <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
-            <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-bold outline-none focus:border-purple-500">
-            <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl"></div>
-            <button id="btnGenerate" onclick="generateUltra()" class="w-full coc-btn py-4 rounded-xl uppercase tracking-widest text-sm">Generate Jadwal</button>
-        </div>
-    </div>
-
-    <div id="actionContainer" class="hidden flex flex-col items-center gap-4 mb-6">
-        <button onclick="location.reload()" class="reset-btn px-6 py-3 rounded-xl uppercase text-xs tracking-widest transition-all">
-            ↺ BUAT BARU (REFRESH)
-        </button>
-        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-10 py-4 rounded-full font-black text-white uppercase shadow-lg transition-all active:scale-95">
-            Simpan Gambar
-        </button>
-    </div>
-
-    <div id="previewContainer">
-        <p class="text-yellow-500 font-bold mb-4 uppercase text-xs tracking-widest">Pratinjau Story:</p>
-        <div id="previewArea"></div>
-    </div>
-
     <div id="captureArea">
-        <div class="profile-section">
-           <p style="font-size: 32px; font-weight: 900; color: #facc15; text-transform: uppercase; letter-spacing: 5px; margin-top: -30px;">
-                Jadwal Imsakiyah 1447H
-            </p>
-            <h2 style="font-size: 30px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -15px; text-shadow: 5px 5px #4a2c0f;">
-                Untukmu Chief
-            </h2>
-            <h2 style="font-size: 55px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -40px; text-shadow: 5px 5px #4a2c0f;">
-                <span id="pName" style="color: #facc15;">CHIEF</span>
-            </h2>
-            <div style="font-size: 28px; margin-bottom: -60px !important; color: #fff;">
-                <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
-            </div>
-            <div style="margin-bottom: -15px;">
-                <h3 id="cityNameDisplay" style="font-size: 45px; font-weight: 900; color: #ffffff; text-shadow: 3px 3px #000;">KOTA</h3>
-            </div>
+        <div class="logo-section">
+            <h2 style="font-size: 22px;">CLASH OF CLANS</h2>
+            <h2>JADWAL IMSAKIYAH 1447H</h2>
         </div>
-        <table class="imsak-table" style="margin-top: -20px !important;">
+        
+        <div class="sub-header">UNTUKMU CHIEF</div>
+
+        <div class="identity-wrapper">
+            <div class="name-highlight">NOFREE</div>
+            <div class="location-highlight">KOTA JAKARTA</div>
+        </div>
+
+        <table class="imsak-table">
             <thead>
                 <tr>
-                    <th style="width: 120px; border-top-left-radius: 25px;">KE</th>
-                    <th style="width: 380px; text-align: center;">TANGGAL</th>
-                    <th style="width: 250px;">IMSAK</th>
-                    <th style="width: 250px; border-top-right-radius: 25px;">MAGHRIB</th>
+                    <th>KE</th>
+                    <th>TANGGAL</th>
+                    <th>IMSAK</th>
+                    <th>MAGHRIB</th>
                 </tr>
             </thead>
-            <tbody id="jadwalBody"></tbody>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Rabu, 18/02/2026</td>
+                    <td class="time-col">04:31</td>
+                    <td class="maghrib-col">18:18</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Kamis, 19/02/2026</td>
+                    <td class="time-col">04:31</td>
+                    <td class="maghrib-col">18:18</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Jumat, 20/02/2026</td>
+                    <td class="time-col">04:32</td>
+                    <td class="maghrib-col">18:18</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Sabtu, 21/02/2026</td>
+                    <td class="time-col">04:32</td>
+                    <td class="maghrib-col">18:17</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Minggu, 22/02/2026</td>
+                    <td class="time-col">04:32</td>
+                    <td class="maghrib-col">18:17</td>
+                </tr>
+            </tbody>
         </table>
-        <div style="margin-top: 40px; width: 100%; text-align: center;">
-            <p style="font-size: 22px; font-weight: 300; color: #ffffff; opacity: 0.7; text-transform: uppercase;">Sumber: Kemenag RI | Created by Clasher 2026</p>
-        </div>
     </div>
 
+    <button class="btn-capture" onclick="takeScreenshot()">Download Gambar</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        let selectedId = "";
-
-        async function fetchCitySuggestions() {
-            const query = document.getElementById('cityInput').value;
-            const box = document.getElementById('suggestionBox');
-            if (query.length < 3) { box.classList.add('hidden'); return; }
-            try {
-                const res = await fetch(`https://api.myquran.com/v2/sholat/kota/cari/${query}`);
-                const data = await res.json();
-                if (data.data.length > 0) {
-                    box.innerHTML = data.data.map(k => `
-                        <div onclick="setCity('${k.id}', '${k.lokasi}')" 
-                             class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">
-                             ${k.lokasi}
-                        </div>`).join('');
-                    box.classList.remove('hidden');
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        function setCity(id, nama) {
-            selectedId = id;
-            document.getElementById('cityInput').value = nama;
-            document.getElementById('suggestionBox').classList.add('hidden');
-        }
-
-        async function generateUltra() {
-            const tag = document.getElementById('tagInput').value.trim();
-            const btn = document.getElementById('btnGenerate');
-            if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
-
-            btn.innerText = "SCOUTING VILLAGE...";
-            btn.disabled = true;
-
-            try {
-                // Fetch CoC & Sholat Data
-                const playerRes = await fetch(`https://nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
-                const player = await playerRes.json();
-
-                const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
-                const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
-                const feb = await febRes.json();
-                const mar = await marRes.json();
-
-                const full = [
-                    ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 18),
-                    ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 19)
-                ];
-
-                const rows = full.slice(0, 30).map((h, i) => {
-                    const part = h.tanggal.split(','); 
-                    return `
-                        <tr>
-                            <td style="color: rgba(255,255,255,0.4); font-weight: 700;">${i+1}</td>
-                            <td style="text-align: center; color: #fff;">${part[0]}, ${part[1].trim()}</td>
-                            <td style="color: #60a5fa; font-weight: 900;">${h.imsak}</td>
-                            <td style="color: #fb923c; font-weight: 900;">${h.maghrib}</td>
-                        </tr>`;
-                }).join('');
-
-                // Update Render Area
-                document.getElementById('jadwalBody').innerHTML = rows;
-                document.getElementById('pName').innerText = (player.name || "CHIEF").toUpperCase();
-                document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
-                document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
-                document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
-
-                // FIX: Menampilkan PreviewArea
-                const previewContainer = document.getElementById('previewContainer');
-                const previewArea = document.getElementById('previewArea');
-                const captureArea = document.getElementById('captureArea');
-
-                // Paksa tampilkan previewContainer
-                previewContainer.style.display = 'flex';
-                
-                // Copy isi dan terapkan gaya manual agar identik
-                previewArea.innerHTML = captureArea.innerHTML;
-                Object.assign(previewArea.style, {
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "150px 60px 60px 60px",
-                    backgroundImage: "url('BG Imsak.jpg')",
-                    backgroundSize: "100% 100%",
-                    boxSizing: "border-box"
-                });
-
-                // Kalkulasi Scale Berdasarkan Lebar Container
-                const scaleValue = previewContainer.offsetWidth / 1080;
-                previewArea.style.transform = `scale(${scaleValue})`;
-                previewContainer.style.height = (1920 * scaleValue) + "px";
-                
-                // Toggle Form
-                document.getElementById('inputWrapper').classList.add('hidden');
-                document.getElementById('actionContainer').classList.remove('hidden');
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            } catch (e) { 
-                alert("Gagal memuat data! Periksa koneksi."); 
-            } finally {
-                btn.innerText = "Generate Jadwal";
-                btn.disabled = false;
-            }
-        }
-
-        function downloadUltra() {
-            const area = document.getElementById('captureArea');
-            const btn = event.target;
-            btn.innerText = "RENDERING...";
+        function takeScreenshot() {
+            const element = document.getElementById('captureArea');
             
-            html2canvas(area, { 
-                useCORS: true, 
-                allowTaint: true,
-                scale: 1, 
-                width: 1080,
-                height: 1920
+            html2canvas(element, {
+                backgroundColor: null,
+                scale: 2, // Meningkatkan kualitas gambar (HD)
+                logging: false,
+                useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `Imsakiyah_Clasher_2026.png`;
+                link.download = 'Jadwal_Imsakiyah_Chief.png';
                 link.href = canvas.toDataURL("image/png");
                 link.click();
-                btn.innerText = "Simpan Gambar";
             });
         }
     </script>
