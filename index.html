@@ -61,7 +61,7 @@
             width: 100%;
             max-width: 400px;
             margin: 20px auto;
-            display: none; /* Akan diubah jadi flex via JS */
+            display: none;
             flex-direction: column;
             align-items: center;
             position: relative;
@@ -76,7 +76,7 @@
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             background-color: #0c111d;
-            margin-bottom: -1920px; /* Menahan overflow agar footer tidak terdorong */
+            margin-bottom: -1920px; 
         }
 
         .coc-btn { background: linear-gradient(to bottom, #270249, #270249); border-bottom: 5px solid #0e0b23; color: #ffffff; font-weight: 900; }
@@ -120,8 +120,8 @@
                 <span id="pName" style="color: #facc15;">CHIEF</span>
             </h2>
             <div style="font-size: 28px; margin-bottom: 0px !important; color: #fff;">
-                <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
-            </div>
+                <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
+            </div>
             <div style="margin-bottom: 0px;">
                 <h3 id="cityNameDisplay" style="font-size: 40px; font-weight: 900; color: #ffffff; ">
                     KOTA
@@ -172,11 +172,9 @@
             if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
             try {
-                // Fetch data CoC
                 const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
                 const player = await playerRes.json();
 
-                // Fetch data Jadwal
                 const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
                 const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
                 const feb = await febRes.json();
@@ -191,31 +189,26 @@
                     const part = h.tanggal.split(','); 
                     const hari = part[0]; 
                     const tgl = part[1].trim(); 
-                
-                    return `
-                        <tr>
-                            <td style="color: rgba(255,255,255,0.3);">${i+1}</td>
-                            <td style="text-align: center; padding-left: 40px; color: #fff;">
-                                ${hari}, ${tgl} 
-                            </td>
-                            <td style="color: #60a5fa;">${h.imsak}</td>
-                            <td style="color: #fb923c;">${h.maghrib}</td>
-                        </tr>`;
+                    return `<tr>
+                        <td style="color: rgba(255,255,255,0.3);">${i+1}</td>
+                        <td style="text-align: center; padding-left: 40px; color: #fff;">${hari}, ${tgl}</td>
+                        <td style="color: #60a5fa;">${h.imsak}</td>
+                        <td style="color: #fb923c;">${h.maghrib}</td>
+                    </tr>`;
                 }).join('');
 
-                // Update konten ke Capture Area (Hidden)
                 document.getElementById('jadwalBody').innerHTML = rows;
                 document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
                 document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
                 document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
                 document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
 
-                // Siapkan Preview Area
-                const captureArea = document.getElementById('captureArea');
-                const previewArea = document.getElementById('previewArea');
+                // LOGIKA TAMPILAN
+                document.getElementById('inputCard').style.display = 'none'; // Sembunyikan Input
                 const container = document.getElementById('previewContainer');
+                const previewArea = document.getElementById('previewArea');
                 
-                previewArea.innerHTML = captureArea.innerHTML;
+                previewArea.innerHTML = document.getElementById('captureArea').innerHTML;
                 previewArea.style.backgroundImage = "url('BG Imsak.jpg')";
                 previewArea.style.backgroundSize = "100% 100%";
                 previewArea.style.padding = "150px 60px 60px 60px";
@@ -223,33 +216,23 @@
                 previewArea.style.flexDirection = "column";
                 previewArea.style.alignItems = "center";
 
-                // Munculkan container agar bisa dihitung lebarnya
                 container.style.display = 'flex';
                 document.getElementById('actionBtn').classList.remove('hidden');
 
-                // Kalkulasi Skala (Diberi sedikit delay agar browser selesai render)
                 setTimeout(() => {
-                    const availableWidth = container.offsetWidth;
-                    const scaleValue = availableWidth / 1080;
-                    
+                    const scaleValue = container.offsetWidth / 1080;
                     previewArea.style.transform = `scale(${scaleValue})`;
                     container.style.height = (1920 * scaleValue) + "px";
                 }, 100);
 
-                window.scrollTo({ top: document.getElementById('actionBtn').offsetTop - 20, behavior: 'smooth' });
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            } catch (e) { alert("Gagal memuat data! Cek tag atau koneksimu, Chief."); }
+            } catch (e) { alert("Gagal memuat data!"); }
         }
 
         function downloadUltra() {
             const area = document.getElementById('captureArea');
-            html2canvas(area, { 
-                useCORS: true, 
-                allowTaint: true,
-                scale: 1, 
-                width: 1080,
-                height: 1920
-            }).then(canvas => {
+            html2canvas(area, { useCORS: true, allowTaint: true, scale: 1, width: 1080, height: 1920 }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `Imsakiyah_Clasher_2026.png`;
                 link.href = canvas.toDataURL("image/png");
@@ -260,6 +243,7 @@
         function resetForm() {
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('actionBtn').classList.add('hidden');
+            document.getElementById('inputCard').style.display = 'block'; // Tampilkan Input Kembali
             document.getElementById('tagInput').value = "";
             document.getElementById('cityInput').value = "";
             selectedId = "";
