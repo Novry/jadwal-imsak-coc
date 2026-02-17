@@ -113,15 +113,15 @@
             <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
             <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-bold outline-none focus:border-purple-500">
             <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-            <button onclick="generateUltra()" class="w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+            <button onclick="generateUltra()" class="font-clash w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
         </div>
     </div>
 
     <div id="actionBtn" class="hidden mb-6 flex flex-col sm:flex-row gap-3 text-center">
-        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-full font-black text-white uppercase transition-all shadow-lg">
+        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-full font-clash text-white uppercase transition-all shadow-lg">
             Simpan Gambar
         </button>
-        <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 px-8 py-4 rounded-full font-black text-white uppercase transition-all border border-slate-500 shadow-lg">
+        <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 px-8 py-4 rounded-full font-clash text-white uppercase transition-all border border-slate-500 shadow-lg">
             Generate Ulang
         </button>
     </div>
