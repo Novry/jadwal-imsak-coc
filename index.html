@@ -171,7 +171,8 @@
             if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
             try {
-				const playerRes = await fetch(`/api?tag=${tag.replace('#', '')}`);
+				// Pastikan https:// ditulis lengkap
+				const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
                 const player = await playerRes.json();
 
                 const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
@@ -254,4 +255,5 @@
         }
     </script>
 </body>
+
 </html>
