@@ -9,9 +9,9 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
         
-        body { font-family: 'Poppins', sans-serif; background-color: #0c111d; color: #e2e8f0; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+        body { font-family: 'Poppins', sans-serif; background-color: #0c111d; color: #e2e8f0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
 
-        /* AREA CAPTURE - TIDAK DIUBAH (1080x1920) */
+        /* AREA CAPTURE - JANGAN DIUBAH (1080x1920) */
         #captureArea {
             position: absolute;
             left: -9999px;
@@ -56,12 +56,12 @@
             line-height: 1.0; 
         }
 
-        /* PREVIEW AREA */
+        /* FIX PREVIEW AREA */
         #previewContainer {
             width: 100%;
             max-width: 400px;
             margin: 20px auto;
-            display: none;
+            display: none; /* Akan diubah jadi flex via JS */
             flex-direction: column;
             align-items: center;
             position: relative;
@@ -76,7 +76,7 @@
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             background-color: #0c111d;
-            margin-bottom: -1920px; 
+            margin-bottom: -1920px; /* Menahan overflow agar footer tidak terdorong */
         }
 
         .coc-btn { background: linear-gradient(to bottom, #270249, #270249); border-bottom: 5px solid #0e0b23; color: #ffffff; font-weight: 900; }
@@ -172,9 +172,11 @@
             if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
             try {
+                // Fetch data CoC
                 const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
                 const player = await playerRes.json();
 
+                // Fetch data Jadwal
                 const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
                 const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
                 const feb = await febRes.json();
@@ -201,12 +203,14 @@
                         </tr>`;
                 }).join('');
 
+                // Update konten ke Capture Area (Hidden)
                 document.getElementById('jadwalBody').innerHTML = rows;
                 document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
                 document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
                 document.getElementById('pClan').innerText = player.clan ? `CLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
                 document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
 
+                // Siapkan Preview Area
                 const captureArea = document.getElementById('captureArea');
                 const previewArea = document.getElementById('previewArea');
                 const container = document.getElementById('previewContainer');
@@ -219,15 +223,22 @@
                 previewArea.style.flexDirection = "column";
                 previewArea.style.alignItems = "center";
 
-                const scaleValue = (container.offsetWidth) / 1080;
-                previewArea.style.transform = `scale(${scaleValue})`;
-                container.style.height = (1920 * scaleValue) + "px";
+                // Munculkan container agar bisa dihitung lebarnya
                 container.style.display = 'flex';
-                
                 document.getElementById('actionBtn').classList.remove('hidden');
+
+                // Kalkulasi Skala (Diberi sedikit delay agar browser selesai render)
+                setTimeout(() => {
+                    const availableWidth = container.offsetWidth;
+                    const scaleValue = availableWidth / 1080;
+                    
+                    previewArea.style.transform = `scale(${scaleValue})`;
+                    container.style.height = (1920 * scaleValue) + "px";
+                }, 100);
+
                 window.scrollTo({ top: document.getElementById('actionBtn').offsetTop - 20, behavior: 'smooth' });
 
-            } catch (e) { alert("Gagal memuat data!"); }
+            } catch (e) { alert("Gagal memuat data! Cek tag atau koneksimu, Chief."); }
         }
 
         function downloadUltra() {
@@ -247,16 +258,11 @@
         }
 
         function resetForm() {
-            // Sembunyikan hasil generate
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('actionBtn').classList.add('hidden');
-            
-            // Kosongkan input
             document.getElementById('tagInput').value = "";
             document.getElementById('cityInput').value = "";
             selectedId = "";
-
-            // Kembali ke atas
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
