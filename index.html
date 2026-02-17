@@ -9,8 +9,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
         
-        body { font-family: 'Poppins', sans-serif; background-color: #0c111d; color: #e2e8f0; padding: 15px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-image: url('BG Full.jpg'); /* Ganti dengan nama file fotomu */
+            background-size: cover;      /* Gambar menutupi seluruh layar */
+            background-position: center; /* Gambar tetap di tengah */
+            background-attachment: fixed;/* Background tidak ikut tergulung saat di-scroll */
+            background-repeat: no-repeat;
+            background-color: #0c111d;   /* Warna cadangan jika gambar gagal load */
+            color: #e2e8f0; 
+            padding: 15px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+        }
         /* AREA CAPTURE - JANGAN DIUBAH (1080x1920) */
         #captureArea {
             position: absolute;
