@@ -236,17 +236,17 @@
     // FUNGSI UNTUK MENGAMBIL DATA JUMLAH DARI GOOGLE SHEETS
     async function updateCounter() {
         try {
-            // Tambahkan timestamp (?t=) agar data selalu fresh (bukan cache browser)
-            const res = await fetch(SPREADSHEET_WEB_APP_URL + "?t=" + new Date().getTime());
+            // Menambahkan ?nocache= diikuti angka unik (waktu)
+            // Ini memaksa sistem mengambil data langsung dari Google, bukan dari cache
+            const res = await fetch(SPREADSHEET_WEB_APP_URL + "?nocache=" + new Date().getTime());
             const data = await res.json();
             
             const counterElement = document.getElementById('totalChiefs');
-            if (data.count !== undefined) {
+            if (data && data.count !== undefined) {
                 counterElement.innerText = data.count.toLocaleString('id-ID');
             }
         } catch (e) {
-            console.error("Gagal mengambil data counter:", e);
-            document.getElementById('totalChiefs').innerText = "0";
+            console.error("Gagal update counter:", e);
         }
     }
 
