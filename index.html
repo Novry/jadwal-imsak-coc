@@ -172,7 +172,7 @@
 
         /* Varian Warna */
         .btn-purple { background: linear-gradient(to bottom, #4a048a, #270249); border-bottom: 6px solid #0e0b23; }
-        .btn-blue { background: linear-gradient(to bottom, #3b8dc4, #1d72b8); border-bottom: 6px solid #0a3d66; }
+        .btn-yellow { background: linear-gradient(to bottom, #facc15, #e9be11); border-bottom: 6px solid #9c7d00; }
         .btn-red { background: linear-gradient(to bottom, #e34545, #b81d1d); border-bottom: 6px solid #4d0a0a; }
 
         /* Efek Tekan */
@@ -188,12 +188,12 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="font-clash w-full coc-btn btn-purple py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+                <button onclick="generateUltra()" class="font-clash w-full coc-btn btn-yellow py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
             </div>
         </div>
 
         <div id="actionBtn" class="hidden mb-6 flex flex-col w-full gap-3 text-center">
-            <button onclick="downloadUltra()" class="coc-btn btn-blue py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
+            <button onclick="downloadUltra()" class="coc-btn btn-yellow py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
                 Simpan Gambar
             </button>
             <button onclick="resetForm()" class="coc-btn btn-red py-4 rounded-xl font-clash text-white uppercase transition-all border shadow-lg w-full">
