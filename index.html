@@ -258,7 +258,9 @@
         // Pastikan fungsi updateCounter tetap memanggil URL Spreadsheet kamu
         async function updateCounter() {
             try {
-                const res = await fetch(SPREADSHEET_WEB_APP_URL);
+                // Tambahkan parameter waktu agar browser tidak mengambil data lama (cache)
+                const res = await fetch(SPREADSHEET_WEB_APP_URL + "?t=" + new Date().getTime());
+                //const res = await fetch(SPREADSHEET_WEB_APP_URL);
                 const data = await res.json();
                 // Ini akan mengisi angka otomatis berdasarkan jumlah baris di Sheet kamu
                 document.getElementById('totalChiefs').innerText = data.count.toLocaleString('id-ID');
