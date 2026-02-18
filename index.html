@@ -229,137 +229,145 @@
     </div>
 
     <script>
-        let selectedId = "";
-        // Ganti URL ini dengan URL Web App dari Google Apps Script kamu
-        const SPREADSHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwkEjBB9bt13cDfqbHtNhJD9XnPFdc8FjlzE34Ek4HE6wfxd-ctLHvB7YS2M8FsgBnf7g/exec";
+    let selectedId = "";
+    // URL Web App Google Apps Script kamu
+    const SPREADSHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwkEjBB9bt13cDfqbHtNhJD9XnPFdc8FjlzE34Ek4HE6wfxd-ctLHvB7YS2M8FsgBnf7g/exec";
 
-        async function fetchCitySuggestions() {
-            const query = document.getElementById('cityInput').value;
-            const box = document.getElementById('suggestionBox');
-            if (query.length < 3) { box.classList.add('hidden'); return; }
-            try {
-                const res = await fetch(`https://api.myquran.com/v2/sholat/kota/cari/${query}`);
-                const data = await res.json();
-                if (data.data.length > 0) {
-                    box.innerHTML = data.data.map(k => `<div onclick="setCity('${k.id}', '${k.lokasi}')" class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">${k.lokasi}</div>`).join('');
-                    box.classList.remove('hidden');
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        function setCity(id, nama) {
-            selectedId = id;
-            document.getElementById('cityInput').value = nama;
-            document.getElementById('suggestionBox').classList.add('hidden');
-        }
-
-        // Simulasi Counter (Ganti dengan fetch jika sudah ada API real-time)
-        //document.getElementById('totalChiefs').innerText = "1.447";
-        // Pastikan fungsi updateCounter tetap memanggil URL Spreadsheet kamu
-        async function updateCounter() {
-            try {
-                // Menambahkan parameter timestamp agar data selalu fresh
-                const res = await fetch(SPREADSHEET_WEB_APP_URL + "?t=" + new Date().getTime());
-                const data = await res.json();
-                
-                const counterElement = document.getElementById('totalChiefs');
-                if (data.count !== undefined) {
-                    counterElement.innerText = data.count.toLocaleString('id-ID');
-                }
-            } catch (e) {
-                console.error("Gagal mengambil data counter:", e);
-                document.getElementById('totalChiefs').innerText = "0";
+    // FUNGSI UNTUK MENGAMBIL DATA JUMLAH DARI GOOGLE SHEETS
+    async function updateCounter() {
+        try {
+            // Tambahkan timestamp (?t=) agar data selalu fresh (bukan cache browser)
+            const res = await fetch(SPREADSHEET_WEB_APP_URL + "?t=" + new Date().getTime());
+            const data = await res.json();
+            
+            const counterElement = document.getElementById('totalChiefs');
+            if (data.count !== undefined) {
+                counterElement.innerText = data.count.toLocaleString('id-ID');
             }
+        } catch (e) {
+            console.error("Gagal mengambil data counter:", e);
+            document.getElementById('totalChiefs').innerText = "0";
         }
-        async function generateUltra() {
-            const tag = document.getElementById('tagInput').value.trim();
-            if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
+    }
 
-            try {
-                const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
-                const player = await playerRes.json();
+    // PANGGIL FUNGSI COUNTER SAAT HALAMAN PERTAMA KALI DIBUKA
+    updateCounter();
 
-                // KIRIM DATA KE SPREADSHEET
-                fetch(SPREADSHEET_WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({
-                        tag: player.tag || tag.toUpperCase(),
-                        name: player.name || "CHIEF"
-                    })
-                });
+    async function fetchCitySuggestions() {
+        const query = document.getElementById('cityInput').value;
+        const box = document.getElementById('suggestionBox');
+        if (query.length < 3) { box.classList.add('hidden'); return; }
+        try {
+            const res = await fetch(`https://api.myquran.com/v2/sholat/kota/cari/${query}`);
+            const data = await res.json();
+            if (data.data.length > 0) {
+                box.innerHTML = data.data.map(k => `<div onclick="setCity('${k.id}', '${k.lokasi}')" class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">${k.lokasi}</div>`).join('');
+                box.classList.remove('hidden');
+            }
+        } catch (e) { console.error(e); }
+    }
 
-                const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
-                const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
-                const feb = await febRes.json();
-                const mar = await marRes.json();
+    function setCity(id, nama) {
+        selectedId = id;
+        document.getElementById('cityInput').value = nama;
+        document.getElementById('suggestionBox').classList.add('hidden');
+    }
 
-                const full = [
-                    ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 19),
-                    ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 20)
-                ];
+    async function generateUltra() {
+        const tag = document.getElementById('tagInput').value.trim();
+        if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
-                const rows = full.slice(0, 30).map((h, i) => {
-                    const part = h.tanggal.split(','); 
-                    return `<tr>
-                        <td style="color: rgba(255,255,255,0.3); font-family: 'coctextlight';">${i+1}</td>
-                        <td style="text-align: center; color: #fff; font-family: 'coctextlight';">${part[0]}, ${part[1].trim()}</td>
-                        <td style="color: #60a5fa; font-family: 'coctextlight'; font-weight: bold;">${h.imsak}</td>
-                        <td style="color: #fb923c; font-family: 'coctextlight'; font-weight: bold;">${h.maghrib}</td>
-                    </tr>`;
-                }).join('');
+        try {
+            const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
+            const player = await playerRes.json();
 
-                document.getElementById('jadwalBody').innerHTML = rows;
-                document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
-                document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
-                document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
-                document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
-
-                document.getElementById('inputCard').style.display = 'none'; 
-                const container = document.getElementById('previewContainer');
-                const previewArea = document.getElementById('previewArea');
-                
-                previewArea.innerHTML = document.getElementById('captureArea').innerHTML;
-                previewArea.style.backgroundImage = "url('BG Imsak.jpg')";
-                previewArea.style.backgroundSize = "100% 100%";
-                previewArea.style.padding = "150px 60px 60px 60px";
-                previewArea.style.display = "flex";
-                previewArea.style.flexDirection = "column";
-                previewArea.style.alignItems = "center";
-
-                container.style.display = 'flex';
-                document.getElementById('actionBtn').classList.remove('hidden');
-
-                setTimeout(() => {
-                    const scaleValue = container.offsetWidth / 1080;
-                    previewArea.style.transform = `scale(${scaleValue})`;
-                    container.style.height = (1920 * scaleValue) + "px";
-                }, 100);
-
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            } catch (e) { alert("Gagal memuat data!"); }
-        }
-
-        function downloadUltra() {
-            const area = document.getElementById('captureArea');
-            html2canvas(area, { useCORS: true, allowTaint: true, scale: 1, width: 1080, height: 1920 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Imsakiyah_Clasher_2026.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
+            // KIRIM DATA KE SPREADSHEET (Proses Hitung)
+            // Pakai .then(updateCounter) agar angka langsung berubah setelah data masuk
+            fetch(SPREADSHEET_WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: JSON.stringify({
+                    tag: player.tag || tag.toUpperCase(),
+                    name: player.name || "CHIEF"
+                })
+            }).then(() => {
+                // Tunggu sebentar lalu update angka counter di layar
+                setTimeout(updateCounter, 2000);
             });
-        }
 
-        function resetForm() {
-            document.getElementById('previewContainer').style.display = 'none';
-            document.getElementById('actionBtn').classList.add('hidden');
-            document.getElementById('inputCard').style.display = 'flex'; 
-            document.getElementById('tagInput').value = "";
-            document.getElementById('cityInput').value = "";
-            selectedId = "";
+            const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
+            const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
+            const feb = await febRes.json();
+            const mar = await marRes.json();
+
+            const full = [
+                ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 19),
+                ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 20)
+            ];
+
+            const rows = full.slice(0, 30).map((h, i) => {
+                const part = h.tanggal.split(','); 
+                return `<tr>
+                    <td style="color: rgba(255,255,255,0.3); font-family: 'coctextlight';">${i+1}</td>
+                    <td style="text-align: center; padding-left: 40px; color: #fff; font-family: 'coctextlight';">${part[0]}, ${part[1].trim()}</td>
+                    <td style="color: #60a5fa; font-family: 'coctextlight'; font-weight: bold;">${h.imsak}</td>
+                    <td style="color: #fb923c; font-family: 'coctextlight'; font-weight: bold;">${h.maghrib}</td>
+                </tr>`;
+            }).join('');
+
+            document.getElementById('jadwalBody').innerHTML = rows;
+            document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
+            document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
+            document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
+            document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
+
+            document.getElementById('inputCard').style.display = 'none'; 
+            const container = document.getElementById('previewContainer');
+            const previewArea = document.getElementById('previewArea');
+            
+            previewArea.innerHTML = document.getElementById('captureArea').innerHTML;
+            previewArea.style.backgroundImage = "url('BG Imsak.jpg')";
+            previewArea.style.backgroundSize = "100% 100%";
+            previewArea.style.padding = "150px 60px 60px 60px";
+            previewArea.style.display = "flex";
+            previewArea.style.flexDirection = "column";
+            previewArea.style.alignItems = "center";
+
+            container.style.display = 'flex';
+            document.getElementById('actionBtn').classList.remove('hidden');
+
+            setTimeout(() => {
+                const scaleValue = container.offsetWidth / 1080;
+                previewArea.style.transform = `scale(${scaleValue})`;
+                container.style.height = (1920 * scaleValue) + "px";
+            }, 100);
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
+
+        } catch (e) { alert("Gagal memuat data!"); }
+    }
+
+    function downloadUltra() {
+        const area = document.getElementById('captureArea');
+        html2canvas(area, { useCORS: true, allowTaint: true, scale: 1, width: 1080, height: 1920 }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Imsakiyah_Clasher_2026.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('previewContainer').style.display = 'none';
+        document.getElementById('actionBtn').classList.add('hidden');
+        document.getElementById('inputCard').style.display = 'flex'; 
+        document.getElementById('tagInput').value = "";
+        document.getElementById('cityInput').value = "";
+        selectedId = "";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Update counter lagi saat reset siapa tahu ada yang baru generate
+        updateCounter();
+    }
+</script>
 </body>
 </html>
