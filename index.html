@@ -135,7 +135,7 @@
             cursor: pointer;
             text-transform: uppercase;
             text-shadow: 2px 2px 0px #000;
-            border: 2px solid #000;
+            border: 0px solid #000;
             overflow: hidden;
             transition: all 0.1s ease;
             width: 100%;
@@ -168,16 +168,16 @@
             <img src="COC Logo Small.png" alt="CoC Logo" class="w-40 mb-4 mx-auto drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
             <h1 class="text-xl font-clash text-white text-center mb-2 uppercase">Cek Jadwal Imsak Kotamu Chief</h1>
             
-            <p class="font-coctextlight text-yellow-500 text-xs mb-5 tracking-widest opacity-80 uppercase text-center">
-                <span id="totalChiefs">...</span> 5 Chief Telah Mengamankan Jadwal Imsaknya
-            </p>
-
             <div class="space-y-3 w-full">
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
                 <button onclick="generateUltra()" class="coc-btn btn-purple text-sm">Generate</button>
             </div>
+
+            <p class="font-coctextlight text-yellow-500 text-xs mb-5 tracking-widest opacity-80 uppercase text-center">
+                <span id="totalChiefs">...</span> Chief Telah Mengamankan Jadwal Imsaknya
+            </p>
         </div>
 
         <div id="actionBtn" class="hidden mb-6 flex flex-col w-full bg-slate-800/60 backdrop-blur-md p-6 rounded-3xl shadow-2xl border-2 border-slate-700/50 gap-4 text-center">
