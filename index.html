@@ -169,7 +169,7 @@
     <div class="main-wrapper">
         <div id="inputCard" class="w-full bg-slate-800/60 backdrop-blur-md p-6 rounded-3xl shadow-2xl border-2 border-slate-700/50 mb-6 flex flex-col items-center">
             <img src="COC Logo Small.png" alt="CoC Logo" class="w-40 mb-4 mx-auto drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
-            <h1 class="text-xl font-clash text-white text-center mb-2 uppercase">Cek Jadwal Imsak Kotamu Chief</h1>
+            <h1 class="text-m font-clash text-white text-center mb-2 uppercase">Temukan Jadwal Imsak Kotamu Chief</h1>
             
             <div class="space-y-3 w-full">
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
@@ -261,7 +261,7 @@
             const res = await fetch(`https://api.myquran.com/v2/sholat/kota/cari/${query}`);
             const data = await res.json();
             if (data.data.length > 0) {
-                box.innerHTML = data.data.map(k => `<div onclick="setCity('${k.id}', '${k.lokasi}')" class="p-4 border-b border-slate-700 hover:bg-slate-700 font-bold uppercase cursor-pointer text-xs text-white">${k.lokasi}</div>`).join('');
+                box.innerHTML = data.data.map(k => `<div onclick="setCity('${k.id}', '${k.lokasi}')" class="p-4 border-b border-slate-700 hover:bg-slate-700 font-coctextlight uppercase cursor-pointer text-xs text-white">${k.lokasi}</div>`).join('');
                 box.classList.remove('hidden');
             }
         } catch (e) { console.error(e); }
