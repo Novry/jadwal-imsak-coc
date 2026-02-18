@@ -204,8 +204,8 @@
                 const mar = await marRes.json();
 
                 const full = [
-                    ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 18),
-                    ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 19)
+                    ...feb.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) >= 19),
+                    ...mar.data.jadwal.filter(h => parseInt(h.tanggal.split(',')[1]) <= 20)
                 ];
 
                 const rows = full.slice(0, 30).map((h, i) => {
