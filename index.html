@@ -69,8 +69,8 @@
             background-size: 100% 100%;
             background-color: #f3e5ab;
             color: #ffffff;
-            /* Padding disesuaikan agar tabel muat */
-            padding: 150px 40px 200px 40px; 
+            /* Padding Besar Agar Teks Bawah Aman */
+            padding: 150px 60px 200px 60px; 
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -88,30 +88,24 @@
 
         .imsak-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
         
-        /* HEADER TABEL DIPERKECIL */
+        /* KEMBALI KE FONT BESAR */
         .imsak-table th { 
             background-color: rgba(74, 44, 15, 0.95); 
             color: #facc15; 
-            padding: 8px 2px; 
-            font-size: 20px; /* Font size header turun */
+            padding: 10px 15px; 
+            font-size: 26px; /* Font Besar Lagi */
             text-transform: uppercase; 
-            border-bottom: 4px solid #facc15; 
+            border-bottom: 5px solid #facc15; 
         }
-
-        /* ISI TABEL DIPERKECIL */
+        
         .imsak-table td { 
             border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-            padding: 6px 2px; 
+            padding: 9px 10px; 
             text-align: center; 
-            font-size: 19px; /* Font size isi turun */
-            font-weight: 600; 
+            font-size: 25px; /* Font Besar Lagi */
+            font-weight: 300; 
             line-height: 1.0; 
         }
-
-        /* Warna Khusus Kolom */
-        .col-imsak { color: #60a5fa; } /* Biru */
-        .col-maghrib { color: #fb923c; } /* Oranye */
-        .col-sholat { color: #e2e8f0; opacity: 0.9; font-size: 18px; } /* Putih agak redup */
 
         #previewContainer {
             width: 100%;
@@ -181,7 +175,7 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="coc-btn btn-purple text-sm">Generate</button>
+                <button onclick="generateUltra()" class="coc-btn btn-purple text-sm">TEMUKAN JADWAL</button>
             </div>
 
             <p class="font-coctextlight text-white-500 text-xs mb-5 tracking-widest opacity-80 uppercase text-center" style="margin-top:30px;">
@@ -191,10 +185,10 @@
 
         <div id="actionBtn" class="hidden mb-6 flex flex-col w-full bg-slate-800/60 backdrop-blur-md p-6 rounded-3xl shadow-2xl border-2 border-slate-700/50 gap-4 text-center">
             <button onclick="downloadUltra()" class="coc-btn btn-yellow py-4 text-white">
-                Simpan Gambar
+                SIMPAN JADWAL
             </button>
             <button onclick="resetForm()" class="coc-btn btn-purple py-4 text-white">
-                Generate Ulang
+                BUAT JADWAL BARU
             </button>
         </div>
 
@@ -226,20 +220,16 @@
         <table class="imsak-table">
             <thead>
                 <tr>
-                    <th style="width: 50px; border-top-left-radius: 25px;">H</th>
-                    <th style="width: 130px;">TGL</th>
-                    <th style="width: 110px;">IMSAK</th>
-                    <th style="width: 110px;">SUBUH</th>
-                    <th style="width: 110px;">DZUHUR</th>
-                    <th style="width: 110px;">ASHAR</th>
-                    <th style="width: 110px;">MAGRIB</th>
-                    <th style="width: 110px; border-top-right-radius: 25px;">ISYA</th>
+                    <th style="width: 150px; border-top-left-radius: 25px;">HARI KE</th>
+                    <th style="width: 350px; text-align: center;">TANGGAL</th>
+                    <th style="width: 250px;">IMSAK</th>
+                    <th style="width: 250px; border-top-right-radius: 25px;">MAGHRIB</th>
                 </tr>
             </thead>
             <tbody id="jadwalBody"></tbody>
         </table>
 
-        <div style="margin-top: 30px; padding-bottom: 120px; width: 100%; text-align: center;">
+        <div style="margin-top: 30px; width: 100%; text-align: center;">
             <p style="font-size: 20px; font-weight: 300; color: #ffffff; opacity: 0.5; text-transform: uppercase;">Sumber Kemenag Republik Indonesia</p>
         </div>
     </div>
@@ -290,7 +280,7 @@
         if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
         const originalText = generateBtn.innerText;
-        generateBtn.innerText = "MENYUSUN STRATEGI...";
+        generateBtn.innerText = "MEMBUAT JADWAL...";
         generateBtn.disabled = true;
         generateBtn.classList.add('opacity-50');
 
@@ -323,19 +313,11 @@
 
             const rows = full.slice(0, 30).map((h, i) => {
                 const part = h.tanggal.split(','); 
-                // Format tanggal jadi lebih pendek: "Kamis, 19/02/2026" -> "19/02"
-                // Ambil tanggal saja (DD/MM) untuk menghemat ruang
-                const dateOnly = part[1].trim().split('/').slice(0,2).join('/');
-                
                 return `<tr>
                     <td style="color: rgba(255,255,255,0.3); font-family: 'coctextlight';">${i+1}</td>
-                    <td style="color: #fff; font-family: 'coctextlight'; font-size: 18px;">${dateOnly}</td>
-                    <td class="col-imsak" style="font-family: 'coctextlight'; font-weight: bold;">${h.imsak}</td>
-                    <td class="col-sholat" style="font-family: 'coctextlight';">${h.subuh}</td>
-                    <td class="col-sholat" style="font-family: 'coctextlight';">${h.dzuhur}</td>
-                    <td class="col-sholat" style="font-family: 'coctextlight';">${h.ashar}</td>
-                    <td class="col-maghrib" style="font-family: 'coctextlight'; font-weight: bold;">${h.maghrib}</td>
-                    <td class="col-sholat" style="font-family: 'coctextlight';">${h.isya}</td>
+                    <td style="text-align: center; padding-left: 40px; color: #fff; font-family: 'coctextlight';">${part[0]}, ${part[1].trim()}</td>
+                    <td style="color: #60a5fa; font-family: 'coctextlight'; font-weight: bold;">${h.imsak}</td>
+                    <td style="color: #fb923c; font-family: 'coctextlight'; font-weight: bold;">${h.maghrib}</td>
                 </tr>`;
             }).join('');
 
@@ -354,7 +336,7 @@
             
             previewArea.style.backgroundImage = "url('BG Imsak.jpg')";
             previewArea.style.backgroundSize = "100% 100%";
-            previewArea.style.padding = "150px 40px 200px 40px"; // Sesuaikan padding di preview juga
+            previewArea.style.padding = "150px 60px 200px 60px"; // Sesuaikan padding di preview juga
             previewArea.style.display = "flex";
             previewArea.style.flexDirection = "column";
             previewArea.style.alignItems = "center";
@@ -384,7 +366,7 @@
         const area = document.getElementById('captureArea');
         html2canvas(area, { useCORS: true, allowTaint: true, scale: 1, width: 1080, height: 1920 }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Imsakiyah_Full_Clasher_2026.png`;
+            link.download = `Imsakiyah_Clasher_2026.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
         });
