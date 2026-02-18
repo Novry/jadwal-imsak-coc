@@ -151,7 +151,7 @@
             display: inline-block;
             cursor: pointer;
             text-transform: uppercase;
-            text-shadow: 2px 2px 0px #000;
+            text-shadow: 0px 0px 0px #000;
             border: 0px solid #000;
             overflow: hidden;
             transition: all 0.1s ease;
@@ -188,7 +188,7 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="font-clash w-full coc-btn btn-yellow py-3 rounded-xl uppercase text-sm">Generate</button>
+                <button onclick="generateUltra()" class="font-clash w-full coc-btn btn-purple py-3 rounded-xl uppercase text-sm">Generate</button>
             </div>
         </div>
 
@@ -196,7 +196,7 @@
             <button onclick="downloadUltra()" class="coc-btn btn-yellow py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
                 Simpan Gambar
             </button>
-            <button onclick="resetForm()" class="coc-btn btn-red py-4 rounded-xl font-clash text-white uppercase transition-all border shadow-lg w-full">
+            <button onclick="resetForm()" class="coc-btn btn-purple py-4 rounded-xl font-clash text-white uppercase transition-all border shadow-lg w-full">
                 Generate Ulang
             </button>
         </div>
