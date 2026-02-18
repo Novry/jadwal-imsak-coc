@@ -1,8 +1,9 @@
 {
-  "name": "coc-imsakiyah",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "build": "echo 'No build step needed'"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ]
 }
