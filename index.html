@@ -258,15 +258,17 @@
         // Pastikan fungsi updateCounter tetap memanggil URL Spreadsheet kamu
         async function updateCounter() {
             try {
-                // Tambahkan parameter waktu agar browser tidak mengambil data lama (cache)
+                // Menambahkan parameter timestamp agar data selalu fresh
                 const res = await fetch(SPREADSHEET_WEB_APP_URL + "?t=" + new Date().getTime());
-                //const res = await fetch(SPREADSHEET_WEB_APP_URL);
                 const data = await res.json();
-                // Ini akan mengisi angka otomatis berdasarkan jumlah baris di Sheet kamu
-                document.getElementById('totalChiefs').innerText = data.count.toLocaleString('id-ID');
+                
+                const counterElement = document.getElementById('totalChiefs');
+                if (data.count !== undefined) {
+                    counterElement.innerText = data.count.toLocaleString('id-ID');
+                }
             } catch (e) {
-                console.log("Gagal memuat counter");
-                document.getElementById('totalChiefs').innerText = "0"; // Set ke 0 jika gagal load
+                console.error("Gagal mengambil data counter:", e);
+                document.getElementById('totalChiefs').innerText = "0";
             }
         }
         async function generateUltra() {
