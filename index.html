@@ -7,33 +7,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-
         @font-face {
-        font-family: 'clash';
-        src: url('Clash-Regular.woff2') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+            font-family: 'clash';
+            src: url('Clash-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
         .font-clash { 
-        font-family: 'Clash', sans-serif !important; 
-    }
+            font-family: 'clash', sans-serif !important; 
+        }
+
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
         
         body { 
             font-family: 'Poppins', sans-serif; 
-            background-image: url('BG Full 2.jpg'); /* Ganti dengan nama file fotomu */
-            background-size: cover;      /* Gambar menutupi seluruh layar */
-            background-position: center; /* Gambar tetap di tengah */
-            background-attachment: fixed;/* Background tidak ikut tergulung saat di-scroll */
+            background-image: url('BG Full 2.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
             background-repeat: no-repeat;
-            background-color: #0c111d;   /* Warna cadangan jika gambar gagal load */
+            background-color: #0c111d; 
             color: #e2e8f0; 
             padding: 15px; 
+            /* MODIFIKASI TENGAH LAYAR */
             display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            justify-content: center; /* Horisontal Center */
+            align-items: center;     /* Vertikal Center */
             min-height: 100vh; 
+            margin: 0;
         }
+
+        /* Pembungkus Utama agar konten tetap rapi di tengah */
+        .main-wrapper {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         /* AREA CAPTURE - JANGAN DIUBAH (1080x1920) */
         #captureArea {
             position: absolute;
@@ -79,7 +93,6 @@
             line-height: 1.0; 
         }
 
-        /* FIX PREVIEW AREA */
         #previewContainer {
             width: 100%;
             max-width: 400px;
@@ -95,7 +108,6 @@
             height: 1920px;
             transform-origin: top center;
             border: none;
-            border-radius: 0px;
             overflow: hidden;
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             background-color: #0c111d;
@@ -107,28 +119,30 @@
 </head>
 <body>
 
-    <div id="inputCard" class="w-full max-w-md bg-slate-800 p-6 rounded-3xl shadow-2xl border-2 border-slate-700 mb-6">
-        <h1 class="text-xl font-clash text-white text-center mb-5 uppercase">Cek Jadwal Imsak Kotamu Chief</h1>
-        <div class="space-y-3">
-            <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
-            <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
-            <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-            <button onclick="generateUltra()" class="font-clash w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+    <div class="main-wrapper">
+        <div id="inputCard" class="w-full bg-slate-800 p-6 rounded-3xl shadow-2xl border-2 border-slate-700 mb-6">
+            <h1 class="text-xl font-clash text-white text-center mb-5 uppercase">Cek Jadwal Imsak Kotamu Chief</h1>
+            <div class="space-y-3">
+                <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
+                <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-mono uppercase outline-none focus:border-purple-500">
+                <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
+                <button onclick="generateUltra()" class="font-clash w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+            </div>
         </div>
-    </div>
 
-    <div id="actionBtn" class="hidden mb-6 flex flex-col sm:flex-row gap-3 text-center">
-        <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg">
-            Simpan Gambar
-        </button>
-        <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all border border-slate-500 shadow-lg">
-            Generate Ulang
-        </button>
-    </div>
+        <div id="actionBtn" class="hidden mb-6 flex flex-col w-full gap-3 text-center">
+            <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
+                Simpan Gambar
+            </button>
+            <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all border border-slate-500 shadow-lg w-full">
+                Generate Ulang
+            </button>
+        </div>
 
-    <div id="previewContainer">
-        <p class="text-yellow-500 font-bold mb-4 uppercase text-xs">PRATINJAU:</p>
-        <div id="previewArea"></div>
+        <div id="previewContainer">
+            <p class="text-yellow-500 font-bold mb-4 uppercase text-xs">PRATINJAU:</p>
+            <div id="previewArea"></div>
+        </div>
     </div>
 
     <div id="captureArea">
@@ -139,16 +153,14 @@
             <h2 style="font-size: 30px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -15px;">
                 Untukmu Chief
             </h2>
-            <h2 class="font-clash" style="font-size: 50px; font-weight: 900; color: #ffffff; text-transform: uppercase; margin-bottom: -15px;">
-                <span id="pName" style="color: #facc15;">CHIEF</span>
+            <h2 class="font-clash" style="font-size: 50px; font-weight: 900; color: #facc15; text-transform: uppercase; margin-bottom: -15px;">
+                <span id="pName">CHIEF</span>
             </h2>
             <div style="font-size: 28px; margin-bottom: 0px !important; color: #fff;">
                 <span id="pTag">#TAG</span> | <span id="pClan" style="font-weight: 900; color: #facc15;">KLAN: LOADING...</span>
             </div>
             <div style="margin-bottom: 0px;">
-                <h3 id="cityNameDisplay" style="font-size: 40px; font-weight: 900; color: #ffffff; ">
-                    KOTA
-                </h3>
+                <h3 id="cityNameDisplay" style="font-size: 40px; font-weight: 900; color: #ffffff;">KOTA</h3>
             </div>
         </div>
         <table class="imsak-table">
@@ -210,11 +222,9 @@
 
                 const rows = full.slice(0, 30).map((h, i) => {
                     const part = h.tanggal.split(','); 
-                    const hari = part[0]; 
-                    const tgl = part[1].trim(); 
                     return `<tr>
                         <td style="color: rgba(255,255,255,0.3);">${i+1}</td>
-                        <td style="text-align: center; padding-left: 40px; color: #fff;">${hari}, ${tgl}</td>
+                        <td style="text-align: center; padding-left: 40px; color: #fff;">${part[0]}, ${part[1].trim()}</td>
                         <td style="color: #60a5fa;">${h.imsak}</td>
                         <td style="color: #fb923c;">${h.maghrib}</td>
                     </tr>`;
@@ -226,8 +236,7 @@
                 document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
                 document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
 
-                // LOGIKA TAMPILAN
-                document.getElementById('inputCard').style.display = 'none'; // Sembunyikan Input
+                document.getElementById('inputCard').style.display = 'none'; 
                 const container = document.getElementById('previewContainer');
                 const previewArea = document.getElementById('previewArea');
                 
@@ -266,7 +275,7 @@
         function resetForm() {
             document.getElementById('previewContainer').style.display = 'none';
             document.getElementById('actionBtn').classList.add('hidden');
-            document.getElementById('inputCard').style.display = 'block'; // Tampilkan Input Kembali
+            document.getElementById('inputCard').style.display = 'block'; 
             document.getElementById('tagInput').value = "";
             document.getElementById('cityInput').value = "";
             selectedId = "";
