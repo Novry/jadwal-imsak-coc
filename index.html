@@ -254,8 +254,19 @@
         }
 
         // Simulasi Counter (Ganti dengan fetch jika sudah ada API real-time)
-        document.getElementById('totalChiefs').innerText = "1.447";
-
+        //document.getElementById('totalChiefs').innerText = "1.447";
+        // Pastikan fungsi updateCounter tetap memanggil URL Spreadsheet kamu
+        async function updateCounter() {
+            try {
+                const res = await fetch(SPREADSHEET_WEB_APP_URL);
+                const data = await res.json();
+                // Ini akan mengisi angka otomatis berdasarkan jumlah baris di Sheet kamu
+                document.getElementById('totalChiefs').innerText = data.count.toLocaleString('id-ID');
+            } catch (e) {
+                console.log("Gagal memuat counter");
+                document.getElementById('totalChiefs').innerText = "0"; // Set ke 0 jika gagal load
+            }
+        }
         async function generateUltra() {
             const tag = document.getElementById('tagInput').value.trim();
             if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
