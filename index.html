@@ -237,8 +237,6 @@
     // FUNGSI UNTUK MENGAMBIL DATA JUMLAH DARI GOOGLE SHEETS
     async function updateCounter() {
         try {
-            // Menambahkan ?nocache= diikuti angka unik (waktu)
-            // Ini memaksa sistem mengambil data langsung dari Google, bukan dari cache
             const res = await fetch(SPREADSHEET_WEB_APP_URL + "?nocache=" + new Date().getTime());
             const data = await res.json();
             
@@ -276,14 +274,25 @@
 
     async function generateUltra() {
         const tag = document.getElementById('tagInput').value.trim();
+        const generateBtn = document.querySelector('button[onclick="generateUltra()"]'); // Ambil tombol generate
+        
         if (!tag || !selectedId) return alert("Chief, isi Tag dan Kota dulu!");
 
+        // 1. TAMPILKAN EFEK LOADING
+        const originalText = generateBtn.innerText;
+        generateBtn.innerText = "MENCARI DATA...";
+        generateBtn.disabled = true;
+        generateBtn.classList.add('opacity-50');
+
         try {
-            const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}`);
+            // Tambahkan parameter waktu agar browser tidak menggunakan cache lama
+            const timeStamp = new Date().getTime();
+            
+            // Fetch Data Player
+            const playerRes = await fetch(`https://graphics.nvrydeck.my.id/api.php?tag=${tag.replace('#', '')}&t=${timeStamp}`);
             const player = await playerRes.json();
 
-            // KIRIM DATA KE SPREADSHEET (Proses Hitung)
-            // Pakai .then(updateCounter) agar angka langsung berubah setelah data masuk
+            // KIRIM DATA KE SPREADSHEET
             fetch(SPREADSHEET_WEB_APP_URL, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -292,10 +301,10 @@
                     name: player.name || "CHIEF"
                 })
             }).then(() => {
-                // Tunggu sebentar lalu update angka counter di layar
                 setTimeout(updateCounter, 2000);
             });
 
+            // Fetch Data Jadwal
             const febRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/02`);
             const marRes = await fetch(`https://api.myquran.com/v2/sholat/jadwal/${selectedId}/2026/03`);
             const feb = await febRes.json();
@@ -316,17 +325,22 @@
                 </tr>`;
             }).join('');
 
+            // UPDATE TAMPILAN
             document.getElementById('jadwalBody').innerHTML = rows;
             document.getElementById('pName').innerText = player.name ? player.name.toUpperCase() : "CHIEF";
             document.getElementById('pTag').innerText = player.tag || tag.toUpperCase();
             document.getElementById('pClan').innerText = player.clan ? `KLAN: ${player.clan.name.toUpperCase()}` : "NO CLAN";
             document.getElementById('cityNameDisplay').innerText = document.getElementById('cityInput').value;
 
+            // PINDAHKAN KE PREVIEW
             document.getElementById('inputCard').style.display = 'none'; 
             const container = document.getElementById('previewContainer');
             const previewArea = document.getElementById('previewArea');
             
+            // Bersihkan preview area lama sebelum mengisi yang baru
+            previewArea.innerHTML = ""; 
             previewArea.innerHTML = document.getElementById('captureArea').innerHTML;
+            
             previewArea.style.backgroundImage = "url('BG Imsak.jpg')";
             previewArea.style.backgroundSize = "100% 100%";
             previewArea.style.padding = "150px 60px 60px 60px";
@@ -345,7 +359,15 @@
 
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-        } catch (e) { alert("Gagal memuat data!"); }
+        } catch (e) { 
+            alert("Gagal memuat data! Pastikan Tag benar atau coba lagi."); 
+            console.error(e);
+        } finally {
+            // KEMBALIKAN TOMBOL KE SEMULA
+            generateBtn.innerText = originalText;
+            generateBtn.disabled = false;
+            generateBtn.classList.remove('opacity-50');
+        }
     }
 
     function downloadUltra() {
@@ -359,14 +381,27 @@
     }
 
     function resetForm() {
+        // 1. Sembunyikan Preview
         document.getElementById('previewContainer').style.display = 'none';
         document.getElementById('actionBtn').classList.add('hidden');
         document.getElementById('inputCard').style.display = 'flex'; 
+        
+        // 2. Kosongkan Input Form
         document.getElementById('tagInput').value = "";
         document.getElementById('cityInput').value = "";
         selectedId = "";
+
+        // 3. RESET DATA TAMPILAN (PENTING: Agar data lama hilang)
+        document.getElementById('pName').innerText = "CHIEF";
+        document.getElementById('pTag').innerText = "#TAG";
+        document.getElementById('pClan').innerText = "KLAN: LOADING...";
+        document.getElementById('cityNameDisplay').innerText = "KOTA";
+        document.getElementById('jadwalBody').innerHTML = ""; // Hapus isi tabel
+        document.getElementById('previewArea').innerHTML = ""; // Hapus preview lama
+
+        // 4. Scroll ke atas
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Update counter lagi saat reset siapa tahu ada yang baru generate
+        
         updateCounter();
     }
 </script>
