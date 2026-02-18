@@ -170,30 +170,49 @@
         
         /* VARIASI WARNA */
         
-        /* HIJAU (Generate) */
-        .btn-green .btn-content {
-            background: linear-gradient(180deg, #85c03f 0%, #366c1b 100%);
-            box-shadow: inset 0 4px 0 #d3ebb7; /* Highlight atas */
+        .coc-btn {
+            position: relative;
+            background: linear-gradient(to bottom, #4a048a, #270249); /* Warna ungu lebih kontras */
+            border: 2px solid #000; /* Outline hitam khas COC */
+            border-bottom: 6px solid #0e0b23; /* Shadow bawah tebal */
+            color: #ffffff;
+            font-weight: 900;
+            border-radius: 12px;
+            padding: 12px 24px;
+            display: inline-block;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px #000; /* Outline teks */
+            overflow: hidden; /* Penting untuk memotong kilauan ::after */
+            transition: all 0.1s ease;
         }
         
-        /* BIRU (Simpan) */
-        .btn-blue .btn-content {
-            background: linear-gradient(180deg, #3f85c0 0%, #1b366c 100%);
-            box-shadow: inset 0 4px 0 #b7d6eb;
+        /* Lapisan Kilau (Glossy) di bagian atas */
+        .coc-btn::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            height: 40%; /* Menutupi hampir setengah tombol */
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+            border-radius: 8px 8px 50% 50%; /* Melengkung di bawah agar terlihat 3D */
+            pointer-events: none;
         }
         
-        /* MERAH/UNGU (Ulangi) */
-        .btn-red .btn-content {
-            background: linear-gradient(180deg, #c03f3f 0%, #6c1b1b 100%);
-            box-shadow: inset 0 4px 0 #ebb7b7;
+        /* Efek Hover (Saat kursor di atas tombol) */
+        .coc-btn:hover {
+            filter: brightness(1.1); /* Sedikit lebih terang */
+            transform: translateY(-1px);
+            border-bottom-width: 7px;
         }
         
-        /* Efek Klik */
-        .button-coc:active {
-            transform: translateY(2px);
-            box-shadow: none;
+        /* Efek Active (Saat tombol di-klik/ditekan) */
+        .coc-btn:active {
+            transform: translateY(3px); /* Turun ke bawah seolah ditekan */
+            border-bottom-width: 2px; /* Shadow bawah menipis */
+            filter: brightness(0.9);
         }
-        .coc-btn { background: linear-gradient(to bottom, #270249, #270249); border-bottom: 5px solid #0e0b23; color: #ffffff; font-weight: 900; }
     </style>
 </head>
 <body>
@@ -205,7 +224,7 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="font-clash w-full button-coc btn-green py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+                <button onclick="generateUltra()" class="font-clash w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
             </div>
         </div>
 
