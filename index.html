@@ -140,79 +140,43 @@
             user-select: none;
         }
         
-        /* Bagian Dalam Button (Lapisan Warna) */
-        .button-coc .btn-content {
-            display: block;
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 2px solid #000; /* Border dalam */
-            font-family: 'clash', sans-serif;
-            font-size: 18px;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 
-                -2px -2px 0 #000,  2px -2px 0 #000,
-                -2px  2px 0 #000,  2px  2px 0 #000,
-                 0px  3px 0 #000; /* Outline teks tebal */
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Efek Glossy (Kilauan di bagian atas) */
-        .button-coc .btn-content::after {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 50%;
-            background: rgba(255, 255, 255, 0.3); /* Kilau putih transparan */
-            border-radius: 5px 5px 100% 100%;
-        }
-        
-        /* VARIASI WARNA */
-        
+       /* GAYA TOMBOL COC SAKTI */
         .coc-btn {
             position: relative;
-            background: linear-gradient(to bottom, #4a048a, #270249); /* Warna ungu lebih kontras */
-            border: 2px solid #000; /* Outline hitam khas COC */
-            border-bottom: 6px solid #0e0b23; /* Shadow bawah tebal */
+            font-family: 'clash', sans-serif;
             color: #ffffff;
             font-weight: 900;
             border-radius: 12px;
-            padding: 12px 24px;
+            padding: 14px 24px;
             display: inline-block;
             cursor: pointer;
             text-transform: uppercase;
-            text-shadow: 2px 2px 0px #000; /* Outline teks */
-            overflow: hidden; /* Penting untuk memotong kilauan ::after */
+            text-shadow: 2px 2px 0px #000;
+            border: 2px solid #000;
+            overflow: hidden;
             transition: all 0.1s ease;
+            width: 100%;
+            text-align: center;
         }
-        
-        /* Lapisan Kilau (Glossy) di bagian atas */
+
+        /* Kilau Glossy */
         .coc-btn::after {
             content: "";
             position: absolute;
-            top: 2px;
-            left: 2px;
-            right: 2px;
-            height: 40%; /* Menutupi hampir setengah tombol */
+            top: 2px; left: 2px; right: 2px;
+            height: 40%;
             background: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
-            border-radius: 8px 8px 50% 50%; /* Melengkung di bawah agar terlihat 3D */
+            border-radius: 8px 8px 50% 50%;
             pointer-events: none;
         }
-        
-        /* Efek Hover (Saat kursor di atas tombol) */
-        .coc-btn:hover {
-            filter: brightness(1.1); /* Sedikit lebih terang */
-            transform: translateY(-1px);
-            border-bottom-width: 7px;
-        }
-        
-        /* Efek Active (Saat tombol di-klik/ditekan) */
-        .coc-btn:active {
-            transform: translateY(3px); /* Turun ke bawah seolah ditekan */
-            border-bottom-width: 2px; /* Shadow bawah menipis */
-            filter: brightness(0.9);
-        }
+
+        /* Varian Warna */
+        .btn-purple { background: linear-gradient(to bottom, #4a048a, #270249); border-bottom: 6px solid #0e0b23; }
+        .btn-blue { background: linear-gradient(to bottom, #3b8dc4, #1d72b8); border-bottom: 6px solid #0a3d66; }
+        .btn-red { background: linear-gradient(to bottom, #e34545, #b81d1d); border-bottom: 6px solid #4d0a0a; }
+
+        /* Efek Tekan */
+        .coc-btn:active { transform: translateY(3px); border-bottom-width: 2px; filter: brightness(0.9); }
     </style>
 </head>
 <body>
@@ -224,15 +188,15 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="font-clash w-full coc-btn py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+                <button onclick="generateUltra()" class="font-clash w-full coc-btn btn-purple py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
             </div>
         </div>
 
         <div id="actionBtn" class="hidden mb-6 flex flex-col w-full gap-3 text-center">
-            <button onclick="downloadUltra()" class="bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
+            <button onclick="downloadUltra()" class="coc-btn btn-blue py-4 rounded-xl font-clash text-white uppercase transition-all shadow-lg w-full">
                 Simpan Gambar
             </button>
-            <button onclick="resetForm()" class="bg-slate-700 hover:bg-slate-600 px-8 py-4 rounded-xl font-clash text-white uppercase transition-all border border-slate-500 shadow-lg w-full">
+            <button onclick="resetForm()" class="coc-btn btn-red py-4 rounded-xl font-clash text-white uppercase transition-all border shadow-lg w-full">
                 Generate Ulang
             </button>
         </div>
