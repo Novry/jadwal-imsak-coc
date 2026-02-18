@@ -125,17 +125,73 @@
             background-color: #0c111d;
             margin-bottom: -1920px; 
         }
-        .btn-purple {
-            /* Base Shadow & Border */
-            background: linear-gradient(180deg, #ebb7e6, #c03fbc, #6c1b68);
+        /* Gaya Dasar Button CoC */
+        .button-coc {
+            position: relative;
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: 3px solid #000; /* Border hitam luar yang tebal */
+            background: #000; /* Dasar hitam untuk menciptakan shadow bawah */
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3); /* Shadow lembut di bawah */
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.05s;
+            user-select: none;
         }
-        .btn-purple:before {
-            /* Body */
-            background: linear-gradient(180deg, #c427bc, #a2219b);
+        
+        /* Bagian Dalam Button (Lapisan Warna) */
+        .button-coc .btn-content {
+            display: block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #000; /* Border dalam */
+            font-family: 'clash', sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                -2px -2px 0 #000,  2px -2px 0 #000,
+                -2px  2px 0 #000,  2px  2px 0 #000,
+                 0px  3px 0 #000; /* Outline teks tebal */
+            position: relative;
+            overflow: hidden;
         }
-        .btn-purple:after {
-            /* Glossy */
-            background: linear-gradient(180deg, #e878e1, rgba(208, 64, 198, 0.73));
+        
+        /* Efek Glossy (Kilauan di bagian atas) */
+        .button-coc .btn-content::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 50%;
+            background: rgba(255, 255, 255, 0.3); /* Kilau putih transparan */
+            border-radius: 5px 5px 100% 100%;
+        }
+        
+        /* VARIASI WARNA */
+        
+        /* HIJAU (Generate) */
+        .btn-green .btn-content {
+            background: linear-gradient(180deg, #85c03f 0%, #366c1b 100%);
+            box-shadow: inset 0 4px 0 #d3ebb7; /* Highlight atas */
+        }
+        
+        /* BIRU (Simpan) */
+        .btn-blue .btn-content {
+            background: linear-gradient(180deg, #3f85c0 0%, #1b366c 100%);
+            box-shadow: inset 0 4px 0 #b7d6eb;
+        }
+        
+        /* MERAH/UNGU (Ulangi) */
+        .btn-red .btn-content {
+            background: linear-gradient(180deg, #c03f3f 0%, #6c1b1b 100%);
+            box-shadow: inset 0 4px 0 #ebb7b7;
+        }
+        
+        /* Efek Klik */
+        .button-coc:active {
+            transform: translateY(2px);
+            box-shadow: none;
         }
         .coc-btn { background: linear-gradient(to bottom, #270249, #270249); border-bottom: 5px solid #0e0b23; color: #ffffff; font-weight: 900; }
     </style>
@@ -149,7 +205,7 @@
                 <input type="text" id="tagInput" placeholder="PLAYER TAG (#...)" class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <input type="text" id="cityInput" oninput="fetchCitySuggestions()" placeholder="CARI KOTA..." class="w-full p-3 rounded-xl bg-slate-900 border border-slate-600 text-white font-coctextlight uppercase outline-none focus:border-purple-500">
                 <div id="suggestionBox" class="relative w-full mt-1 bg-slate-800 hidden z-50 overflow-hidden shadow-2xl rounded-xl border border-slate-600"></div>
-                <button onclick="generateUltra()" class="font-clash w-full btn-purple py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
+                <button onclick="generateUltra()" class="font-clash w-full button-coc btn-red py-3 rounded-xl uppercase tracking-widest text-sm hover:opacity-90 transition-all">Generate</button>
             </div>
         </div>
 
