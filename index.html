@@ -173,11 +173,7 @@
     </style>
 </head>
 <body>
-    <div class="w-full bg-black/40 border border-yellow-500/30 rounded-xl p-3 mb-4 flex items-center justify-center min-h-[60px]">
-        <p class="text-center font-coctextlight text-yellow-400 text-xs tracking-wide leading-relaxed tips-visible transition-opacity duration-500" id="tipsText">
-            STRATEGI: JANGAN SERANG WAR SAAT LAPAR!
-        </p>
-    </div>
+    
     <div class="main-wrapper">
         <div id="inputCard" class="w-full bg-slate-800/60 backdrop-blur-md p-6 rounded-3xl shadow-2xl border-2 border-slate-700/50 mb-6 flex flex-col items-center">
             <img src="COC Logo Small.png" alt="CoC Logo" class="w-40 mb-4 mx-auto drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)]">
@@ -193,6 +189,11 @@
             <p class="font-coctextlight text-white-500 text-xs mb-5 tracking-widest opacity-80 uppercase text-center" style="margin-top:30px;">
                 <span id="totalChiefs">...</span> Chief Telah Mengamankan Jadwal Imsaknya
             </p>
+            <div class="w-full bg-white border border-black-500/30 rounded-xl p-3 mb-4 flex items-center justify-center min-h-[60px]">
+                <p class="text-center font-coctextlight text-black-400 text-xs tracking-wide leading-relaxed tips-visible transition-opacity duration-500" id="tipsText">
+                    STRATEGI: JANGAN SERANG WAR SAAT LAPAR!
+                </p>
+            </div>
         </div>
 
         <div id="actionBtn" class="hidden mb-6 flex flex-col w-full bg-slate-800/60 backdrop-blur-md p-6 rounded-3xl shadow-2xl border-2 border-slate-700/50 gap-4 text-center">
@@ -262,42 +263,6 @@
             console.error("Gagal update counter:", e);
         }
     }
-
-        // --- FITUR TIPS & STRATEGI CLASHER ---
-        const tipsList = [
-            "STRATEGI: Farming Loot terbaik adalah saat jam Ngabuburit!",
-            "TIPS: Jangan lupa pasang Shield sebelum berangkat Tarawih.",
-            "STRATEGI: Sedekah Troops ke teman satu Clan menambah pahala.",
-            "INGAT: Tahan emosi saat War, nanti pahala puasanya berkurang Chief!",
-            "TIPS: Gunakan waktu Sahur untuk cek Builder yang nganggur.",
-            "STRATEGI: Request Troops yang sopan, Clanmates juga sedang puasa.",
-            "INFO: Upgrade Wall butuh Gold, Upgrade Iman butuh Sabar.",
-            "TIPS: Jangan menghabiskan Gems untuk hal sia-sia, berhematlah!",
-            "STRATEGI: Serang Base lawan pelan-pelan, asal bintang 3 (Sabar).",
-            "INGAT: Waktu Imsak adalah tanda berhenti Farming makanan."
-        ];
-        
-        let tipsIndex = 0;
-        const tipsElement = document.getElementById('tipsText');
-        
-        function rotateTips() {
-            // 1. Fade Out (Hilang pelan-pelan)
-            tipsElement.classList.remove('tips-visible');
-            tipsElement.classList.add('tips-fade');
-        
-            setTimeout(() => {
-                // 2. Ganti Teks saat hilang
-                tipsIndex = (tipsIndex + 1) % tipsList.length;
-                tipsElement.innerText = tipsList[tipsIndex];
-        
-                // 3. Fade In (Muncul pelan-pelan)
-                tipsElement.classList.remove('tips-fade');
-                tipsElement.classList.add('tips-visible');
-            }, 500); // Tunggu 0.5 detik (sesuai durasi transisi CSS)
-        }
-        
-        // Ganti tips setiap 4 detik
-        setInterval(rotateTips, 4000);
     updateCounter();
 
     async function fetchCitySuggestions() {
@@ -438,6 +403,41 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
         updateCounter();
     }
+        // --- FITUR TIPS & STRATEGI CLASHER ---
+        const tipsList = [
+            "STRATEGI: Farming Loot terbaik adalah saat jam Ngabuburit!",
+            "TIPS: Jangan lupa pasang Shield sebelum berangkat Tarawih.",
+            "STRATEGI: Sedekah Troops ke teman satu Clan menambah pahala.",
+            "INGAT: Tahan emosi saat War, nanti pahala puasanya berkurang Chief!",
+            "TIPS: Gunakan waktu Sahur untuk cek Builder yang nganggur.",
+            "STRATEGI: Request Troops yang sopan, Clanmates juga sedang puasa.",
+            "INFO: Upgrade Wall butuh Gold, Upgrade Iman butuh Sabar.",
+            "TIPS: Jangan menghabiskan Gems untuk hal sia-sia, berhematlah!",
+            "STRATEGI: Serang Base lawan pelan-pelan, asal bintang 3 (Sabar).",
+            "INGAT: Waktu Imsak adalah tanda berhenti Farming makanan."
+        ];
+        
+        let tipsIndex = 0;
+        const tipsElement = document.getElementById('tipsText');
+        
+        function rotateTips() {
+            // 1. Fade Out (Hilang pelan-pelan)
+            tipsElement.classList.remove('tips-visible');
+            tipsElement.classList.add('tips-fade');
+        
+            setTimeout(() => {
+                // 2. Ganti Teks saat hilang
+                tipsIndex = (tipsIndex + 1) % tipsList.length;
+                tipsElement.innerText = tipsList[tipsIndex];
+        
+                // 3. Fade In (Muncul pelan-pelan)
+                tipsElement.classList.remove('tips-fade');
+                tipsElement.classList.add('tips-visible');
+            }, 500); // Tunggu 0.5 detik (sesuai durasi transisi CSS)
+        }
+        
+        // Ganti tips setiap 4 detik
+        setInterval(rotateTips, 4000);
     </script>
 </body>
 </html>
